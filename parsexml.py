@@ -2,7 +2,8 @@ import xml.etree.ElementTree as ET
 tree = ET.parse('modified_sms_v2.xml')
 root = tree.getroot()
 
-''' Iterate through the xml file to extract and categorise SMS
+''' 
+Iterate through the xml file to extract and categorise SMS
 into types: 
        -Incoming money
        -Payment to code holder
@@ -13,7 +14,8 @@ into types:
        -Transactions Initiated by Third Parties
        -Withdrawals from Agents
        -Bank Transfers
-       -Internet and Voice Bundle Purchases'''
+       -Internet and Voice Bundle Purchases
+'''
 
 # Extract the data needed
 for sms in root.findall('sms'):
@@ -23,14 +25,6 @@ for sms in root.findall('sms'):
     smsDateSent = sms.get('dateSent') # Get the text inside the date_sent tag
     smsReadableDate = sms.get('readableDate') # Get the text inside the readable_date tag
 
-    #print(smsAddress)
-    #print(smsDate)
-    #print(smsBody)
-    #print(smsDateSent)
-    #print(smsReadableDate)
-    #print('***')
-
-# Categorise the data
 # Initialise of a nested dictionary to categorise transactions
 transactionType = {}
 
@@ -45,10 +39,11 @@ thirdParties = "Transactions Initiated by Third Parties"
 withdrawals = "Withdrawals from Agents"
 bankTransfers = "Bank Transfers"
 bundlePurchases = "Internet and Voice Bundle Purchases"
+others = "Text to ignore"
 
 categories = [
     incoming, code, mobileNumber, bankDeposits, airtime,
-    power, thirdParties, withdrawals, bankTransfers, bundlePurchases
+    power, thirdParties, withdrawals, bankTransfers, bundlePurchases, others
 ]
 
 # Initialize dictionary entries
@@ -63,9 +58,27 @@ for category in categories:
 
 # Append data to dictionary
 for sms in root.findall('sms'):
-     smsBody = sms.get('body')  # Make sure smsBody is assigned before using it
-     if smsBody and "received" in smsBody.lower():  # Ensure smsBody is not None
+    smsBody = sms.get('body')
+    if smsBody and "Airtime" in smsBody:
+        transactionType[airtime].append(smsBody)
+    elif smsBody and "Power" in smsBody:
+        transactionType[power].append(smsBody)
+    elif smsBody and "Bundles" in smsBody:
+        transactionType[bundlePurchases].append(smsBody)
+    elif smsBody and "via agent" in smsBody:
+        transactionType[withdrawals].append(smsBody)
+    elif smsBody and "deposit" in smsBody:
+        transactionType[bankTransfers].append(smsBody)
+    elif smsBody and "payment" in smsBody:
+        transactionType[code].append(smsBody)
+    elif smsBody and "transferred" in smsBody:
+        transactionType[mobileNumber].append(smsBody)
+    elif smsBody and "received" in smsBody:
          transactionType[incoming].append(smsBody)
+    elif smsBody and "transaction" in smsBody:
+         transactionType[thirdParties].append(smsBody)
+    else:
+        transactionType[others].append(smsBody)
 
 # Print results
 for category, transactions in transactionType.items():
