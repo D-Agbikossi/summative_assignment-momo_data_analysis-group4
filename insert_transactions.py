@@ -45,25 +45,6 @@ def insert_transaction(conn, transaction):
     except Exception as e:
         print(f"Error inserting transaction: {e}")
 
-# Example transactions (This will be your `transactions` list from the previous script)
-transactions = [
-    {
-        "category": "Incoming Money",
-        "date": "2025-02-12",
-        "time": "14:30:00",
-        "amount": 1000.00,
-        "transaction_id": "12345",
-        "body": "Received 1000 RWF from John. TxId: 12345"
-    },
-    {
-        "category": "Payment to Code Holder",
-        "date": "2025-02-13",
-        "time": "15:45:00",
-        "amount": 500.00,
-        "transaction_id": "12346",
-        "body": "Payment of 500 RWF to code holder. TxId: 12346"
-    }
-]
 
 # Main function to insert all transactions
 def main():
