@@ -78,7 +78,5 @@ for sms in root.findall('sms'):
     })
 
 # Print results (for preview)
-for transaction in transactions[:5]:  # Display first five transactions for preview
+for transaction in transactions:  # Display transactions for preview
     print(transaction)
-
-# Transactions are now structured optimally for relational database storage
