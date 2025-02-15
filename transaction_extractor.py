@@ -3,6 +3,18 @@ import re
 import logging
 from datetime import datetime
 
+import mysql.connector
+
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="root",
+    database="momo_transactions"
+)
+
+cursor = conn.cursor()
+print("Connected successfully!")
+
 # Configure logging for unprocessed messages
 logging.basicConfig(filename='unprocessed_sms.log', level=logging.WARNING, format='%(asctime)s - %(message)s')
 
