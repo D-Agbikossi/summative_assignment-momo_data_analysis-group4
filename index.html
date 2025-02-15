@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoMo Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo"></div>
+        <ul class="menu">
+            <li class="active">
+                <a href="#">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Statistics</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-question-circle"></i>
+                    <span>FAQ</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+            <li class="logout">
+                <a href="#">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div> 
+    
+    <!--Header and Search-->
+    <div class="main-section">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <span>Welcome back</span>
+                <h2>John Doe</h2>
+            </div>
+            <div class="user-info">
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search transactions..." onkeyup="filterTransactions()">
+                </div>
+               <img src="Images/60111.jpg" alt="User Avatar" />
+            </div>
+        </div>
+        
+        <!--Transaction data-->
+        <div class="card-section">
+            <h3 class="main-header">Transaction data</h3>
+            <div class="card-wrapper">
+                <!-- Incoming Card -->
+                <div class="data-card">
+                    <div class="card-header">
+                        <div class="amount">
+                            <span class="title">Incomings</span>
+                            <span class="number">350</span>
+                        </div>
+                        <span class="arrow-down"></span>
+                    </div>
+                    <span class="momo-number">*** **** 252</span>
+                </div>
+
+                <!-- Outgoing Card -->
+                <div class="data-card red-lite">
+                    <div class="card-header">
+                        <div class="amount">
+                            <span class="title">Outgoings</span>
+                            <span class="number">250</span>
+                        </div>
+                        <span class="arrow-up"></span>
+                    </div>
+                    <span class="momo-number">*** **** 252</span>
+                </div>
+
+                <!-- Withdrawals Card -->
+                <div class="data-card purple-lite">
+                    <div class="card-header">
+                        <div class="amount">
+                            <span class="title">Withdrawals</span>
+                            <span class="number">300</span>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                    </div>
+                    <span class="momo-number">*** **** 252</span>
+                </div>
+
+                <!-- Bills Card -->
+                <div class="data-card blue-lite">
+                    <div class="card-header">
+                        <div class="amount">
+                            <span class="title">Bills</span>
+                            <span class="number">150</span>
+                        </div>
+                        <div class="icon2">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                    </div>
+                    <span class="momo-number">*** **** 252</span>
+                </div>
+            </div>
+        </div>
+        
+        <!--Recent Transaction-->
+        <div class="transac-table">
+            <h3 class="main-header">Recent Transactions</h3>
+            <div class="table-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Sender</th>
+                            <th>Reciever</th>
+                            <th>Status</th>
+                        </tr>
+                        <tbody>
+                            <tr>
+                                <td>12345678</td>
+                                <td>Withdrawal</td>
+                                <td>5000 RWF</td>
+                                <td>2025-02-19</td>
+                                <td>Outgoing</td>
+                                <td>N/A</td>
+                                <td>John Doe</td>
+                                <td class="status-color-green">Success</td>
+                            </tr>
+                            <tr>
+                                <td>12345678</td>
+                                <td>Transfer</td>
+                                <td>5000 RWF</td>
+                                <td>2025-04-02</td>
+                                <td>Outgoing</td>
+                                <td>John Doe</td>
+                                <td>Dave Billing</td>
+                                <td class="status-color-green">Sent</td>
+                            </tr>
+                            <tr>
+                                <td>12345678</td>
+                                <td>Transfer</td>
+                                <td>5000 RWF</td>
+                                <td>2025-04-02</td>
+                                <td>Outgoing</td>
+                                <td>John Doe</td>
+                                <td>Code User - Agnes</td>
+                                <td class="status-color-red">Failed</td>
+                            </tr>
+                            <tr>
+                                <td>12345678</td>
+                                <td>Bill payment</td>
+                                <td>5000 RWF</td>
+                                <td>2025-04-02</td>
+                                <td>Outgoing</td>
+                                <td>N/A</td>
+                                <td>John Doe</td>
+                                <td class="status-color-green">Success</td>
+                            </tr>
+                            <tr>
+                                <td>12345678</td>
+                                <td>Transfer</td>
+                                <td>5000 RWF</td>
+                                <td>2025-04-02</td>
+                                <td>Incoming</td>
+                                <td>Dave Banks</td>
+                                <td>John Doe</td>
+                                <td class="status-color-green">Recieved</td>
+                            </tr>
+                            <tr></tr>
+                                <td>12345678</td>
+                                <td>Transfer</td>
+                                <td>5000 RWF</td>
+                                <td>2025-04-02</td>
+                                <td>Incoming</td>
+                                <td>John Doe</td>
+                                <td>Sheila Grace</td>
+                                <td class="status-color-red">Failed</td>
+                            </tr>
+                        </tbody>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
