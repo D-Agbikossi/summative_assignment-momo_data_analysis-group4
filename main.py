@@ -81,9 +81,9 @@ for sms in root.findall('sms'):
 # MySQL Connection Setup
 try:
     conn = mysql.connector.connect(
-        host="127.0.0.1",
+        host="localhost",
         user="root",
-        password="Simeon1405x",
+        password="root",
         database="momo_database",
         auth_plugin='mysql_native_password'
     )
