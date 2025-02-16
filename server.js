@@ -12,9 +12,9 @@ app.use(express.static(path.join(__dirname)));  // Serve static files
 
 // Database connection
 const db = mysql.createConnection({
-    host: '127.0.0.1',
+    host: 'localhost',
     user: 'root',  
-    password: 'Simeon1405x', 
+    password: 'root', 
     database: 'momo_database'
 });
 
