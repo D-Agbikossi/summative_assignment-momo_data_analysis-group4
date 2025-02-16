@@ -89,5 +89,6 @@ def index():
     # Return the rendered HTML template with the embedded plots
     return render_template('index.html', img_base64=img_base64, img_base64_bar=img_base64_bar)
 
+
 if __name__ == '__main__':
     app.run(debug=True)
