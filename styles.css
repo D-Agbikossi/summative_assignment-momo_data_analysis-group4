@@ -23,7 +23,7 @@ body {
     color: #fff;
     overflow: hidden;
     transition: all 0.5s linear;
-    background: rgba(252, 252, 109);
+    background: #ffe000;
 }
 
 .sidebar:hover {
@@ -110,7 +110,7 @@ body {
 }
 
 .header-title h2{
-    color: yellow;
+    color: #ffe000;
 }
 
 
@@ -309,7 +309,7 @@ table {
 }
 
 thead {
-    background: rgba(252, 252, 109);
+    background: #ffe000;
     color: #000000;
 }
 
@@ -354,4 +354,9 @@ tfoot td {
 
 .status-color-green{
     color: rgb(9, 190, 9);
+}
+
+/* Statistics Page Styling  */
+.statistics-header-title h2 {
+    color: #ffe000;
 }

@@ -83,8 +83,13 @@ conn = mysql.connector.connect(
     host="localhost",
     user="root",
     password="root",
-    database="momo_database"
+    database="momo_database",
+    auth_plugin='mysql_native_password'
 )
+    print("Connected to MySQL database!")
+except mysql.connector.Error as err:
+    print(f"Error connecting to MySQL: {err}")
+    exit()
 cursor = conn.cursor()
 
 # Create table if not exists
