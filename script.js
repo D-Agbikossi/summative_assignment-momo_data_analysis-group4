@@ -49,9 +49,9 @@ async function fetchRecentTransactions() {
             row.innerHTML = `
                 <td>${transaction.transaction_id}</td>
                 <td>${transaction.category}</td>
-                <td>${transaction.body}</td>
-                <td>${transaction.date}</td>
-                <td>${transaction.time}</td>
+                <td>${transaction.sms_body}</td>
+                <td>${transaction.sms_date}</td>
+                <td>${transaction.sms_time}</td>
                 <td>${transaction.amount}</td>
             `;
             tableBody.appendChild(row);

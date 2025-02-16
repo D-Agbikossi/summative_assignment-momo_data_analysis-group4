@@ -11,9 +11,9 @@ logger = logging.getLogger(__name__)
 try:
     # MySQL Connection Setup
     conn = mysql.connector.connect(
-        host="localhost",
+        host="127.0.0.1",
         user="root",
-        password="root",
+        password="Simeon1405x",
         database="momo_database",
         auth_plugin='mysql_native_password'
     )
@@ -63,7 +63,7 @@ try:
 
     # Insert Transactions into MySQL
     insert_transaction_query = """
-    INSERT INTO momo_transactions (category)
+    INSERT INTO transactions (category)
     VALUES (%s)
     """
     for transaction in transactions:
