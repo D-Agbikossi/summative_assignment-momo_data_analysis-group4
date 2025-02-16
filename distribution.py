@@ -4,6 +4,22 @@ import logging
 import mysql.connector
 from datetime import datetime
 
+<<<<<<< HEAD
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+try:
+    # MySQL Connection Setup
+    conn = mysql.connector.connect(
+        host="127.0.0.1",
+        user="root",
+        password="Simeon1405x",
+        database="momo_database",
+        auth_plugin='mysql_native_password'
+    )
+    logger.info("Connected to MySQL database!")
+=======
 # MySQL Connection Setup
 conn = mysql.connector.connect(
     host="localhost",
@@ -13,6 +29,7 @@ conn = mysql.connector.connect(
     auth_plugin='mysql_native_password'
 )
 print("Connected to MySQL database!")
+>>>>>>> 27fcb85bca163a62d77c042337066424434b6f96
 except mysql.connector.Error as err:
 print(f"Error connecting to MySQL: {err}")
 exit()
@@ -53,6 +70,21 @@ transactions = [
     {"category": "bank transfer"},
 ]
 
+<<<<<<< HEAD
+    # Insert Transactions into MySQL
+    insert_transaction_query = """
+    INSERT INTO transactions (category)
+    VALUES (%s)
+    """
+    for transaction in transactions:
+        try:
+            cursor.execute(insert_transaction_query, (transaction["category"],))
+        except Exception as e:
+            logger.error(f"Error inserting transaction: {transaction['category']}\nError: {e}")
+            conn.rollback()
+            continue
+        conn.commit()  # Commit after each successful insertion
+=======
 # Insert Transactions into MySQL
 insert_transaction_query = """
 INSERT INTO momo_transactions (category)
@@ -63,6 +95,7 @@ for transaction in transactions:
         cursor.execute(insert_transaction_query, (transaction["category"],))
     except Exception as e:
         logging.error(f"Error inserting transaction: {transaction['category']}\n{e}")
+>>>>>>> 27fcb85bca163a62d77c042337066424434b6f96
 
 # Update Distribution Table (Category Counts)
 update_distribution_query = """

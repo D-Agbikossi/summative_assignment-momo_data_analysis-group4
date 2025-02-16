@@ -79,13 +79,14 @@ for sms in root.findall('sms'):
     })
 
 # MySQL Connection Setup
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="root",
-    database="momo_database",
-    auth_plugin='mysql_native_password'
-)
+try:
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="momo_database",
+        auth_plugin='mysql_native_password'
+    )
     print("Connected to MySQL database!")
 except mysql.connector.Error as err:
     print(f"Error connecting to MySQL: {err}")
