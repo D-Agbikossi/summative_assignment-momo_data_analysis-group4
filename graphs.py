@@ -26,15 +26,15 @@ def index():
     conn = get_db_connection()
 
     # Query to fetch data from the database
-    query = "SELECT sms_data, amount, category FROM momo_transactions WHERE amount IS NOT NULL"
+    query = "SELECT sms_date, amount, category FROM transactions WHERE amount IS NOT NULL"
     df = pd.read_sql_query(query, conn)
 
     # Close the connection
     conn.close()
 
-    # Convert "sms_data" to datetime format
-    df['sms_data'] = pd.to_datetime(df['sms_data'])
-    df = df.sort_values(by='sms_data')
+    
+    df['amount'] *= 100000
+    df = df.sort_values(by='sms_date')
 
     # Aggregate data by category
     summary_df = df.groupby("category")["amount"].sum().reset_index()

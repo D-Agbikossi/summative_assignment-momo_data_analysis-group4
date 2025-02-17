@@ -1,0 +1,532 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+*{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+}
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 110px;
+    height: 100vh;
+    padding: 0 1.7rem;
+    color: #fff;
+    overflow: hidden;
+    transition: all 0.5s linear;
+    background: #ffe000;
+}
+
+.sidebar:hover {
+    width: 240px;
+    transition: 0.5s;
+}
+
+.logo {
+    height: 80px;
+    padding: 16px;
+}
+
+.menu {
+    height: 88%;
+    position: relative;
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    padding: 1rem;
+    margin: 8px 0; 
+    border-radius: 8px;
+    transition: all 0.5s ease-in-out;
+}
+
+.menu li:hover, .active {
+    background: #fffdfd;
+}
+
+.menu a {
+    color: black;
+    font-size: 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.menu a span {
+    overflow: hidden;
+}
+
+.menu a i {
+    font-size: 1.2rem;
+}
+
+.logout {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* Main Section */
+
+.main-section {
+    position: relative;
+    background: #ebe9e9;
+    width: 100%;
+    padding: 1rem;
+}
+
+.header-wrapper img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px 2rem;
+    margin-bottom: 1rem;
+}
+
+.header-title {
+    color: rgb(0, 0, 0);
+}
+
+.header-title h2{
+    color: #ffe000;
+}
+
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-box {
+    background: rgb(237, 237, 237);
+    border-radius: 15px;
+    color: black;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+}
+
+.search-box input {
+    background: transparent;
+    padding: 10px;
+}
+
+.search-box i {
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.5s ease-out;
+}
+
+.search-box i:hover {
+    transform: scale(1.2);
+}
+
+
+#dateFilter {
+    padding: 10px;
+    border-radius: 15px;
+    background-color:  rgb(237, 237, 237);
+    font-size: 16px;
+    width: 200px;
+    margin-right: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+#dateFilter:focus {
+    border-color: #ffe000;
+    outline: none;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 30px;
+    background-color: #ffe000;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: black;
+    font-weight: 600;
+}
+
+
+/* Card Section */
+.card-section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.card-wrapper {
+    display: flex; 
+    gap: 1rem; 
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+}
+
+
+.main-header {
+    color: rgb(0, 0, 0);
+    padding-bottom: 10px;
+    font-size: 15px;
+}
+
+.data-card {
+    background: rgb(190, 255, 199);
+    border-radius: 10px;
+    padding: 1.2rem;
+    width: calc(25% - 1rem); 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.5s ease-in-out;
+    min-width: 250px; 
+    
+}
+
+
+.data-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.amount {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 12px;
+    font-weight: 200;
+}
+
+.number {
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.arrow-down::before {
+    content: "\2199";  /* Unicode for ↙ */
+    color: #fff;       
+    display: inline-flex;  
+    align-items: center;
+    justify-content: center;
+    height: 45px;      
+    width: 45px;      
+    border-radius: 50%; 
+    font-size: 35px;   
+    background: rgb(9, 190, 9); 
+}
+
+.momo-number {
+    font-size: 18px;
+    color: #777777;
+    letter-spacing: 2px;
+}
+
+.arrow-up::before {
+    content: "\2197"; /* Unicode for ↗ */
+    color: #fff;       
+    display: inline-flex;  
+    align-items: center;
+    justify-content: center;
+    height: 45px;      
+    width: 45px;      
+    border-radius: 50%; 
+    font-size: 35px;   
+    background: rgb(255, 0, 0); 
+}
+
+.icon {
+    color: #fff;       
+    height: 45px;
+    width: 45px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 20px;
+    background: rgb(90, 0, 129);
+    display: flex;  
+    align-items: center;  
+    justify-content: center; 
+}
+
+.icon i, .icon::before {
+    font-size: 22px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+}
+
+.icon2 {
+    color: #fff;       
+    height: 45px;
+    width: 45px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 20px;
+    background: rgb(0, 92, 150);
+    display: flex;  
+    align-items: center;  
+    justify-content: center; 
+}
+
+.icon2 i, .icon2::before {
+    font-size: 22px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; 
+}
+
+.red-lite {
+    background: rgb(255, 200, 200);
+}
+
+.blue-lite {
+    background: rgb(154, 216, 255);
+}
+
+.purple-lite {
+    background: rgb(234, 186, 255);
+}
+
+
+/* Recent Transaction Section */
+#transactions-table {
+    background: #fff;
+    margin-top: 1rem;
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+.table-content {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #ffe000;
+    color: #000000;
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+}
+
+tbody {
+    background: #f2f2f2;
+}
+
+td {
+    padding: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background: #fff;
+}
+
+tfoot {
+    background: rgba(113, 99, 186, 255);
+    font-weight: bold;
+    color: #fff;
+}
+
+tfoot td {
+    padding: 15px;
+}
+
+.table-content button {
+    color: green;
+    background: none;
+    cursor: pointer;
+}
+
+.status-color-red{
+    color: rgb(255, 0, 0);
+}
+
+.status-color-green{
+    color: rgb(9, 190, 9);
+}
+
+/* Statistics Page Styling  */
+.statistics-header-title h2 {
+    color: #ffe000;
+}
+
+/* Financial Overview Styles */
+.financial-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.summary-card {
+    background: rgb(190, 255, 199);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.income .card-icon {
+    background: #e3f2fd;
+    color: #2196f3;
+}
+
+.expenses .card-icon {
+    background: #fbe9e7;
+    color: #ff5722;
+}
+
+.bills .card-icon {
+    background: #e8f5e9;
+    color: #4caf50;
+}
+
+.card-info h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #666;
+}
+
+.amount {
+    margin: 5px 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.period {
+    font-size: 14px;
+    color: #888;
+}
+
+.transactions-section {
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.transaction-filters {
+    margin: 20px 0;
+}
+
+.transaction-filters button {
+    padding: 8px 16px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 20px;
+    background: #f5f5f5;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.transaction-filters button.active {
+    background: #2196f3;
+    color: white;
+}
+
+.transaction-list {
+    margin-top: 20px;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+/* Statistics Page Styling  */
+.statistics-header-title h2 {
+    color: #ffe000;
+}
+
+
+
+
+.chart-section {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+h3 {
+    color: #555;
+    margin-top: 20px;
+}
+
+.chart-section img {
+    display: block;
+    margin: 20px auto;
+    width: 1000px; /* Make charts bigger */
+    height: auto; /* Maintain aspect ratio */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #f9f9f9;
+}
+
+img:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}

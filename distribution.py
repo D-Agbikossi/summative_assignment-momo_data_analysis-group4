@@ -1,7 +1,7 @@
 import mysql.connector
 import logging
 
-
+# Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -12,9 +12,10 @@ def update_distribution():
       - outgoings: count of transactions for payment-related categories:
             'Payment to Code Holder', 'Transfers to Mobile Numbers',
             'Airtime Bill Payments', 'Cash Power Bill Payments',
-            'Transactions Initiated by Third Parties', 'Bank Transfers',
+            'Bank Transfers',
             'Internet and Voice Bundle Purchases'
-      - withdrawals: count of transactions where category is 'Withdrawals from Agents'
+      - withdrawals: count of transactions for payment-related categories: 
+      'Transactions Initiated by Third Parties', 'Withdrawals from Agents'
       - bills: count of transactions where category is 'Bank Deposits'
     Then, updates the single summary row (id = 1) with these counts.
     """
@@ -28,6 +29,7 @@ def update_distribution():
         )
         cursor = conn.cursor()
 
+        # Create the distribution table if it doesn't exist
         create_table_query = """
         CREATE TABLE IF NOT EXISTS distribution (
             id INT PRIMARY KEY,
@@ -40,6 +42,7 @@ def update_distribution():
         cursor.execute(create_table_query)
         conn.commit()
 
+        # Ensure a single summary row exists with id = 1
         insert_row_query = """
         INSERT IGNORE INTO distribution (id, incomings, outgoings, withdrawals, bills)
         VALUES (1, 0, 0, 0, 0)
@@ -47,6 +50,7 @@ def update_distribution():
         cursor.execute(insert_row_query)
         conn.commit()
 
+        # Update distribution counts using subqueries from the transactions table
         update_query = """
         UPDATE distribution
         SET 
@@ -68,14 +72,15 @@ def update_distribution():
             ),
             withdrawals = (
                 SELECT COUNT(*) FROM transactions
-                WHERE transactions.category = 'Withdrawals from Agents'
+                WHERE sms_body LIKE '%withdrawn%'
             ),
             bills = (
                 SELECT COUNT(*) FROM transactions
                 WHERE transactions.category = 'Bank Deposits'
             )
         WHERE id = 1
-        """
+"""
+
         cursor.execute(update_query)
         conn.commit()
 

@@ -4,19 +4,19 @@ import logging
 import mysql.connector
 from datetime import datetime
 
-
+# Configure logging for unprocessed messages
 logging.basicConfig(filename='unprocessed_sms.log', level=logging.WARNING, format='%(asctime)s - %(message)s')
 
-
+# Parse XML file
 tree = ET.parse('modified_sms_v2.xml')
 root = tree.getroot()
 
-
+# Function to extract amount from SMS body
 def extract_amount(sms_body):
     match = re.search(r'([0-9]+[,.]?[0-9]*) RWF', sms_body)
     return int(match.group(1).replace(',', '')) if match else None
 
-
+# Extract transaction ID from SMS body
 def extract_transaction_id(sms_body):
     match = re.search(r'TxId[:\s]+(\d+)|Financial Transaction Id[:\s]+(\d+)', sms_body)
     if match:
@@ -24,7 +24,7 @@ def extract_transaction_id(sms_body):
     
     return None
 
-
+# Convert timestamp to readable date and time
 def format_date(timestamp):
     if not timestamp:
         return None, None 
@@ -34,7 +34,7 @@ def format_date(timestamp):
     except ValueError:
         return None, None
 
-
+# Define transaction categories
 categories = {
     "Incoming Money": ["received"],
     "Payment to Code Holder": ["payment"],
@@ -48,7 +48,7 @@ categories = {
     "Internet and Voice Bundle Purchases": ["Bundles"]
 }
 
-
+# Define transaction types based on categories
 def determine_transaction_type(category):
     if category == "Incoming Money":
         return "incomings"
@@ -69,10 +69,10 @@ def determine_transaction_type(category):
     else:
         return "uncategorized"
     
-
+# Initialize data structure for relational database
 transactions = []
 
-
+# Process SMS data
 for sms in root.findall('sms'):
     sms_body = sms.get('body', "")
     sms_date = sms.get('date')
@@ -80,19 +80,19 @@ for sms in root.findall('sms'):
     amount = extract_amount(sms_body)
     transaction_id = extract_transaction_id(sms_body) or "N/A"  
 
-    
+    # Ignore SMS without essential data
     if not sms_body or not formatted_date or amount is None:
         logging.warning(f"Unprocessed SMS: {sms_body}")
         continue
 
-
+    # Identify category using regex (case insensitive)
     category = "Uncategorized"
     for cat, keywords in categories.items():
         if any(re.search(rf'\b{kw}\b', sms_body, re.IGNORECASE) for kw in keywords):
             category = cat
             break
 
-    
+    # Determine transaction type based on category
     transaction_type = determine_transaction_type(category)
 
     transactions.append({
@@ -105,7 +105,7 @@ for sms in root.findall('sms'):
         "type": transaction_type
     })
 
-
+# MySQL Connection Setup
 try:
     conn = mysql.connector.connect(
         host="localhost",
@@ -120,7 +120,7 @@ except mysql.connector.Error as err:
     exit()
 cursor = conn.cursor()
 
-
+# Create table if not exists
 create_table_query = """
 CREATE TABLE IF NOT EXISTS transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS transactions (
 cursor.execute(create_table_query)
 conn.commit()
 
-
+# Insert Transactions into MySQL
 insert_query = """
     INSERT INTO transactions (transaction_id, category, sms_body, sms_date, sms_time, amount, type)
     VALUES (%s, %s, %s, %s, %s, %s, %s)
@@ -156,7 +156,7 @@ for transaction in transactions:
     except Exception as e:
         logging.error(f"Error inserting transaction: {transaction['body']}\n{e}")
 
-
+# Commit and Close Connection
 conn.commit()
 cursor.close()
 conn.close()

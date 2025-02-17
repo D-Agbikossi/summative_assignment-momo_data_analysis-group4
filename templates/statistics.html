@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistics</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
@@ -14,13 +14,13 @@
         <div class="logo"></div>
         <ul class="menu">
             <li>
-                <a href="index.html">
+                <a href="index">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="active">
-                <a href="statistics.html">
+            <li>
+                <a href="statistics">
                     <i class="fas fa-chart-bar"></i>
                     <span>Statistics</span>
                 </a>
@@ -33,7 +33,6 @@
             </li>
         </ul>
     </div>
-    
 
     <!--Header and Search-->
     <div class="main-section">
@@ -46,13 +45,20 @@
                     <i class="fa-solid fa-search"></i>
                     <input type="text" id="searchInput" placeholder="Search transactions..." onkeyup="filterTransactions()">
                 </div>
-               <img src="Images/60111.jpg" alt="User Avatar" />
+                <img src="/static/Images/60111.jpg" alt="User Avatar" />
             </div>
         </div>
+        <div class="chart-section">
+            <h3 class="main-header">Full Analysis</h3>
 
-    <script src="script.js"></script>
-    <script src="server.js"></script>
-    
+            <h3>Mobile Money Transactions Over Time</h3>
+            <!-- Display the scatter plot -->
+            <img src="data:image/png;base64,{{ img_base64 }}" alt="Scatter Plot" width="600px">
 
+            <h3>Total Transactions by Category</h3>
+            <!-- Display the bar chart -->
+            <img src="data:image/png;base64,{{ img_base64_bar }}" alt="Bar Chart" width="600px">
+        </div>
+    </div>
 </body>
 </html>
