@@ -1,7 +1,7 @@
 import mysql.connector
 import logging
 
-# Set up logging
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,6 @@ def update_distribution():
         )
         cursor = conn.cursor()
 
-        # Create the distribution table if it doesn't exist
         create_table_query = """
         CREATE TABLE IF NOT EXISTS distribution (
             id INT PRIMARY KEY,
@@ -41,7 +40,6 @@ def update_distribution():
         cursor.execute(create_table_query)
         conn.commit()
 
-        # Ensure a single summary row exists with id = 1
         insert_row_query = """
         INSERT IGNORE INTO distribution (id, incomings, outgoings, withdrawals, bills)
         VALUES (1, 0, 0, 0, 0)
@@ -49,7 +47,6 @@ def update_distribution():
         cursor.execute(insert_row_query)
         conn.commit()
 
-        # Update distribution counts using subqueries from the transactions table
         update_query = """
         UPDATE distribution
         SET 

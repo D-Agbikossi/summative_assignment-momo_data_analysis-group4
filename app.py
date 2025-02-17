@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask import Flask, render_template
 import mysql.connector
 import logging
-from datetime import timedelta, datetime  # Ensure this is imported if needed
+from datetime import timedelta, datetime  
 from distribution import update_distribution
 
 logging.basicConfig(level=logging.INFO)
@@ -10,11 +10,11 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-# Database Configuration
+
 db_config = {
     "host": "localhost",
     "user": "root",
-    "password": "Simeon1405x",  # Replace with your actual MySQL password
+    "password": "Simeon1405x",  
     "database": "momo_database"
 }
 
@@ -33,14 +33,13 @@ def get_recent_transactions():
         cursor.close()
         conn.close()
         
-        # Convert datetime or timedelta to serializable format
         for transaction in transactions:
-            # Convert datetime to string format (optional, adjust as needed)
+            
             if isinstance(transaction['sms_date'], datetime):
-                transaction['sms_date'] = transaction['sms_date'].strftime('%Y-%m-%d %H:%M:%S')  # You can change the format if needed
+                transaction['sms_date'] = transaction['sms_date'].strftime('%Y-%m-%d %H:%M:%S')  
 
             if isinstance(transaction['sms_time'], timedelta):
-                transaction['sms_time'] = transaction['sms_time'].total_seconds()  # Convert to total seconds, or change as required
+                transaction['sms_time'] = transaction['sms_time'].total_seconds()  
 
         return transactions
     except mysql.connector.Error as err:
@@ -48,7 +47,6 @@ def get_recent_transactions():
 
 import mysql.connector
 
-# Database connection settings
 db_config = {
     "host": "127.0.0.1",
     "user": "root",
@@ -59,7 +57,6 @@ db_config = {
 @app.route('/get_transaction_summary')
 def get_transaction_summary():
     try:
-        # Connect to MySQL
         db = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
@@ -68,7 +65,6 @@ def get_transaction_summary():
         )
         cursor = db.cursor()
         
-        # Define category conditions
         outgoing_categories = (
             'Payment to Code Holder', 'Transfers to Mobile Numbers',
             'Airtime Bill Payments', 'Cash Power Bill Payments',
@@ -76,7 +72,6 @@ def get_transaction_summary():
             'Internet and Voice Bundle Purchases'
         )
         
-        # Query to count each type
         queries = {
             "incomings": "SELECT COUNT(*) FROM transactions WHERE category = 'Incoming Money'",
             "outgoings": f"SELECT COUNT(*) FROM transactions WHERE category IN {outgoing_categories}",
@@ -84,7 +79,6 @@ def get_transaction_summary():
             "bills": "SELECT COUNT(*) FROM transactions WHERE category = 'Bank Deposits'"
         }
         
-        # Execute queries and fetch results
         counts = {}
         for key, query in queries.items():
             cursor.execute(query)
