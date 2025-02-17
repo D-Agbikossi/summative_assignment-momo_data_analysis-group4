@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoMo Dashboard</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo"></div>
+        <ul class="menu">
+            <li class="active">
+                <a href="#">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:3000/statistics.html">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Statistics</span>
+                </a>
+            </li>
+            <li class="logout">
+                <a href="#">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!--Header and Search-->
+    <div class="main-section">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <span>Welcome back</span>
+                <h2>John Doe</h2>
+            </div>
+            <div class="user-info">
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search transactions..."
+                        onkeyup="filterTransactions()">
+                </div>
+                <img src="/static/Images/60111.jpg" alt="User Avatar" />
+            </div>
+        </div>
+
+        <!--Transaction data-->
+        <div class="card-section">
+            <h3 class="main-header">Transaction Data</h3>
+            <div class="card-wrapper">
+                <div class="data-card">
+                    <div class="card-header">
+                        <div class="amount">
+                            <span class="title">Incomings</span>
+                            <span class="number" id="incomings">350</span>
+                        </div>
+                        <span class="arrow-down"></span>
+                    </div>
+                    <span class="momo-number">*** **** 252</span>
+                </div>
+
+                <div class="data-card red-lite">
+                    <div class="card-header">
+                        <div class="amount">
+                            <span class="title">Outgoings</span>
+                            <span class="number" id="outgoings">250</span>
+                        </div>
+                        <span class="arrow-up"></span>
+                    </div>
+                    <span class="momo-number">*** **** 252</span>
+                </div>
+
+                <div class="data-card purple-lite">
+                    <div class="card-header">
+                        <div class="amount">
+                            <span class="title">Withdrawals</span>
+                            <span class="number" id="withdrawals">300</span>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                    </div>
+                    <span class="momo-number">*** **** 252</span>
+                </div>
+
+                <div class="data-card blue-lite">
+                    <div class="card-header">
+                        <div class="amount">
+                            <span class="title">Bills</span>
+                            <span class="number" id="bills">150</span>
+                        </div>
+                        <div class="icon2">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                    </div>
+                    <span class="momo-number">*** **** 252</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="transactions-table">
+            <h3 class="main-header">Recent Transactions</h3>
+            <div class="table-content">
+                <table id="transactions-section">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Category</th>
+                            <th>Body</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-table-body">
+                        <!-- Data will be populated here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            // Fetch the transaction summary from the backend
+            fetch('/get_transaction_summary')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the HTML elements with the fetched data
+                    document.getElementById('incomings').textContent = data.incomings || 0;
+                    document.getElementById('outgoings').textContent = data.outgoings || 0;
+                    document.getElementById('withdrawals').textContent = data.withdrawals || 0;
+                    document.getElementById('bills').textContent = data.bills || 0;
+                })
+                .catch(error => {
+                    console.error('Error fetching transaction data:', error);
+                });
+        </script>
+
+        <script src="/static/script.js"></script>
+        <script src="/server.js"></script>
+</body>
+
+</html>

@@ -11,27 +11,28 @@ logging.basicConfig(filename='unprocessed_sms.log', level=logging.WARNING, forma
 tree = ET.parse('modified_sms_v2.xml')
 root = tree.getroot()
 
-
 # Function to extract amount from SMS body
 def extract_amount(sms_body):
     match = re.search(r'([0-9]+[,.]?[0-9]*) RWF', sms_body)
     return int(match.group(1).replace(',', '')) if match else None
 
-
 # Extract transaction ID from SMS body
 def extract_transaction_id(sms_body):
-    match = re.search(r'TxId[:\s]+(\d+)', sms_body)
-    return match.group(1) if match else None
-
+    match = re.search(r'TxId[:\s]+(\d+)|Financial Transaction Id[:\s]+(\d+)', sms_body)
+    if match:
+        return match.group(1) if match.group(1) else match.group(2)
+    
+    return None
 
 # Convert timestamp to readable date and time
 def format_date(timestamp):
+    if not timestamp:
+        return None, None 
     try:
         dt = datetime.fromtimestamp(int(timestamp) / 1000)
         return dt.strftime('%Y-%m-%d'), dt.strftime('%H:%M:%S')
     except ValueError:
         return None, None
-
 
 # Define transaction categories
 categories = {
@@ -47,35 +48,61 @@ categories = {
     "Internet and Voice Bundle Purchases": ["Bundles"]
 }
 
+# Define transaction types based on categories
+def determine_transaction_type(category):
+    if category == "Incoming Money":
+        return "incomings"
+    elif category in [
+        "Payment to Code Holder",
+        "Transfers to Mobile Numbers",
+        "Airtime Bill Payments",
+        "Cash Power Bill Payments",
+        "Transactions Initiated by Third Parties",
+        "Bank Transfers",
+        "Internet and Voice Bundle Purchases"
+    ]:
+        return "outgoings"
+    elif category == "Withdrawals from Agents":
+        return "withdrawals"
+    elif category == "Bank Deposits":
+        return "bills"
+    else:
+        return "uncategorized"
+    
 # Initialize data structure for relational database
 transactions = []
 
 # Process SMS data
 for sms in root.findall('sms'):
-    smsBody = sms.get('body', "")
-    smsDate = sms.get('date')
-    formattedDate, formattedTime = format_date(smsDate)
-    amount = extract_amount(smsBody)
-    transaction_id = extract_transaction_id(smsBody)
+    sms_body = sms.get('body', "")
+    sms_date = sms.get('date')
+    formatted_date, formatted_time = format_date(sms_date)
+    amount = extract_amount(sms_body)
+    transaction_id = extract_transaction_id(sms_body) or "N/A"  
 
     # Ignore SMS without essential data
-    if not smsBody or not formattedDate or amount is None:
-        logging.warning(f"Unprocessed SMS: {smsBody}")
+    if not sms_body or not formatted_date or amount is None:
+        logging.warning(f"Unprocessed SMS: {sms_body}")
         continue
 
-    category = "Text to ignore"
+    # Identify category using regex (case insensitive)
+    category = "Uncategorized"
     for cat, keywords in categories.items():
-        if any(keyword in smsBody for keyword in keywords):
+        if any(re.search(rf'\b{kw}\b', sms_body, re.IGNORECASE) for kw in keywords):
             category = cat
             break
 
+    # Determine transaction type based on category
+    transaction_type = determine_transaction_type(category)
+
     transactions.append({
         "category": category,
-        "date": formattedDate,
-        "time": formattedTime,
+        "date": formatted_date,
+        "time": formatted_time,
         "amount": amount,
         "transaction_id": transaction_id,
-        "body": smsBody
+        "body": sms_body,
+        "type": transaction_type
     })
 
 # MySQL Connection Setup
@@ -83,7 +110,7 @@ try:
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="root",
+        password="Simeon1405x",
         database="momo_database",
         auth_plugin='mysql_native_password'
     )
@@ -95,14 +122,15 @@ cursor = conn.cursor()
 
 # Create table if not exists
 create_table_query = """
-CREATE TABLE IF NOT EXISTS momo_transactions (
+CREATE TABLE IF NOT EXISTS transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    transaction_id VARCHAR(50),
+    transaction_id VARCHAR(50) NULL,
     category VARCHAR(255),
     sms_body TEXT,
     sms_date DATE,
     sms_time TIME,
-    amount DECIMAL(10,2)
+    amount DECIMAL(10,2),
+    type VARCHAR(50)
 );
 """
 cursor.execute(create_table_query)
@@ -110,8 +138,8 @@ conn.commit()
 
 # Insert Transactions into MySQL
 insert_query = """
-    INSERT INTO momo_transactions (transaction_id, category, sms_body, sms_date, sms_time, amount)
-    VALUES (%s, %s, %s, %s, %s, %s)
+    INSERT INTO transactions (transaction_id, category, sms_body, sms_date, sms_time, amount, type)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
 """
 
 for transaction in transactions:
@@ -122,7 +150,8 @@ for transaction in transactions:
             transaction["body"],
             transaction["date"],
             transaction["time"],
-            transaction["amount"]
+            transaction["amount"],
+            transaction["type"]
         ))
     except Exception as e:
         logging.error(f"Error inserting transaction: {transaction['body']}\n{e}")
@@ -133,4 +162,3 @@ cursor.close()
 conn.close()
 
 print("Transactions successfully inserted into MySQL!")
-
